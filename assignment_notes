@@ -1,0 +1,179 @@
+The Ames Housing dataset
+
+
+
+1. Feature Categorization
+
+We'll categorize features into two groups:
+
+    Location-related features: Neighborhood, MS Zoning, Lot Config, Street, Alley, Land Slope, Condition1, Condition2
+
+    Property-related features: Overall Qual, Overall Cond, Year Built, Year Remod/Add, Total Bsmt SF, Gr Liv Area, Garage Cars, Full Bath, Fireplaces, etc.
+
+
+Training models with all features and then another without location features. This way, we can directly measure the drop in model performance when location-related features are removed. 
+
+Step-by-Step Approach
+
+    Full Model
+
+        Train a regression model (e.g., XGBoost, Random Forest, or Linear Regression) using all available features.
+        Evaluate performance using RMSE, MAE, and R².
+        Analyze SHAP values to determine the most influential features.
+
+    Model Without Location Features
+        Remove all location-related variables (e.g., Neighborhood, MS Zoning, Condition1, etc.).
+        Retrain the model using only property-related features.
+        Compare performance metrics with the full model.
+
+    Use K Clustering to disocver clusters in the data
+
+    Impact Analysis
+        Compare feature importances between the two models.
+        Check if removing location variables significantly affects prediction accuracy.
+        Use statistical tests (e.g., paired t-test on errors) to determine if the drop in performance is statistically significant.
+
+IMPORTANT
+
+We are testing **how the model** interprets and utilises location-related data** when predicting house prices
+
+What This Experiment Tells Us
+
+    Impact of Location on Predictions
+
+        If the model with all features significantly outperforms the one without location features, it means location-related variables contribute substantially to price predictions.
+        If the performance gap is small, it suggests property characteristics alone are sufficient, and location may have less impact.
+
+    Feature Importance & Interpretation
+
+        SHAP values will show how much location features influence individual predictions.
+        Comparing feature importances before and after removing location variables reveals whether the model shifts focus to other features (e.g., square footage, condition) when location is removed.
+
+    Fairness & Realism Considerations
+
+        If location influences too much, it might indicate price biases based on neighborhood rather than home quality.
+        If property features alone predict prices well, it suggests that house pricing is more about the house itself than its surroundings.
+
+Real World Implication
+
+1. Real Estate Market Insights
+
+    If location is more important than property features:
+        This suggests that buyers prioritize neighborhood factors over home characteristics.
+        It reinforces why real estate agents emphasize “location, location, location.”
+        It can guide property investors on whether to focus on neighborhood development vs. individual home upgrades.
+
+    If property features are more important:
+        It suggests homebuyers and investors care more about home size, quality, and amenities rather than location.
+        It could challenge the common belief that neighborhood matters the most in pricing.
+
+2. Housing Affordability & Policy Decisions
+    Impact on housing prices & gentrification:
+        If location drives prices significantly, this could lead to issues like gentrification, where wealthier buyers push out lower-income residents from desirable areas.
+        Cities may need policies to balance development and prevent housing inequalities.
+
+    Fair property taxation & assessments:
+
+        Governments use property valuation models for taxation. If location overpowers other factors, tax policies might be unfairly favoring some neighborhoods over others.
+        Policymakers could use findings to improve fair tax assessments.
+
+3. Mortgage & Lending Decisions
+
+    Fair lending & bias detection:
+        Banks and mortgage lenders use predictive models for loan approvals. If location dominates the pricing model, it could introduce redlining risks—where loans are denied based on neighborhood rather than financial merit.
+        Regulators could use findings to ensure AI-driven mortgage models do not reinforce socioeconomic biases.
+
+    Better risk assessment for banks:
+        If property features matter more, lenders might adjust loan criteria to focus more on house quality rather than neighborhood reputation.
+
+4. Urban Planning & Sustainability
+
+    Future city planning:
+        If location dominates, city planners might need to invest more in developing underperforming areas to balance housing demand.
+        If property features are key, efforts might shift to improving home quality rather than just infrastructure upgrades.
+
+    Sustainability considerations:
+        If location drives prices, developers may continue urban sprawl into high-demand areas, increasing environmental impact.
+        If property features matter more, eco-friendly housing innovations (e.g., energy-efficient homes) could become a stronger market focus.
+
+5. Homeowners & Buyers' Decision-Making
+
+    For homeowners:
+        If location is dominant, homeowners have less control over price appreciation.
+        If property features matter more, homeowners can increase value through renovations.
+
+    For buyers:
+
+        Understanding price drivers helps buyers prioritize features vs. location based on long-term goals.
+        If location is key, buyers may sacrifice home quality for a better area.
+        If property features dominate, they may focus on home upgrades instead of neighborhood prestige.
+
+
+At its core, this experiment is testing how predictive models interpret and use location-related data—which in turn reflects how algorithms, and by extension, AI-driven decision-making in real estate, learn from and amplify real-world patterns.
+
+WHAT WE ARE REALLY TESTING
+
+    How Machine Learning Models Learn & Prioritize Information
+
+        Does the model rely heavily on location variables, or does it find more value in property attributes?
+        Does removing location features force the model to adjust its weighting of other factors?
+
+    Model Dependency on Data Biases
+
+        If the model’s performance drops significantly when removing location, it suggests the dataset contains strong location-based pricing patterns—which may reflect real-world biases.
+
+        If performance remains strong without location, the model is learning that home attributes alone are enough to predict price, suggesting price formation is less about geography.
+
+    AI Transparency & Feature Explainability
+
+        By comparing SHAP values and permutation importance, you’re checking:
+
+            How much the model leans on location.
+            How price predictions change when location data is removed.
+
+        This aligns with AI fairness concerns—especially in real estate pricing and lending, where models should be explainable and unbiased.
+
+    Limitations of AI in Complex Human Decisions
+
+        Real estate pricing is not just data-driven—buyers make emotional, social, and practical decisions beyond what's in the dataset.
+
+        By testing what happens whn models lack location data, you see how well (or poorly) AI can generalize house pricing without full context.
+
+Big Picture: Testing AI’s Real-World Decision-Making
+
+It’s about understanding how AI interprets data in decision-making systems.
+
+
+PROJECT STRUCTURE 
+
+1. Data Preparation & Feature Categorization
+
+    Define location features (Neighborhood, Condition1, MS Zoning, etc.).
+    Define property features (Gr Liv Area, Overall Qual, Garage Cars, etc.).
+    Perform EDA to visualize price distribution across location & property attributes.
+
+2. Model Training & Feature Importance Analysis
+
+    Train Model A: All Features
+    Train Model B: No Location Features
+
+    Compare:
+        Performance (RMSE, R², MAE)
+        SHAP values (How much do models rely on location?)
+        Permutation Feature Importance
+        Does removing location change the way the model ranks feature importance?
+
+3. Bias & Fairness Analysis
+
+    If location features dominate, discuss:
+        Potential for AI-driven real estate bias (e.g., reinforcing wealth gaps).
+        How mortgage lending models might behave.
+        Fairness concerns in property taxation & affordability.
+    If property features perform well, discuss:
+        How AI can generalize without relying on location biases.
+        Implications for fairer housing models.
+
+4. Ethical & Policy Considerations
+    Should AI models in real estate limit reliance on location?
+    What safeguards are needed for mortgage lending AI?
+    How can urban planning use AI fairly?
